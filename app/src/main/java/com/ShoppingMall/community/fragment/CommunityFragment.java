@@ -10,7 +10,7 @@ import com.ShoppingMall.base.BaseFragment;
 
 /**
  * Created by 情v枫 on 2017/2/22.
- *
+ * <p>
  * 发现Fragment
  */
 
@@ -37,5 +37,5 @@ public class CommunityFragment extends BaseFragment {
         Log.e("TAG", "发现的数据被初始化了");
         textView.setText("发现内容");
     }
-    
+
 }
