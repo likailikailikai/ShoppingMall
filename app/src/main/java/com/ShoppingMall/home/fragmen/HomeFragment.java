@@ -1,5 +1,6 @@
 package com.ShoppingMall.home.fragmen;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.ShoppingMall.R;
 import com.ShoppingMall.base.BaseFragment;
+import com.ShoppingMall.home.adapter.HomeAdapter;
 import com.ShoppingMall.home.bean.HomeBean;
 import com.ShoppingMall.utils.Constants;
 import com.alibaba.fastjson.JSON;
@@ -37,6 +39,7 @@ public class HomeFragment extends BaseFragment {
     RecyclerView rvHome;
     @InjectView(R.id.ib_top)
     ImageButton ibTop;
+    private HomeAdapter adapter;
 
 
     @Override
@@ -88,6 +91,14 @@ public class HomeFragment extends BaseFragment {
         //使用fastjson解析json数据
         HomeBean homeBean = JSON.parseObject(response,HomeBean.class);
         Log.e("TAG", "解析数据成功=="+homeBean.getResult().getHot_info().get(0).getName());
+
+        //设置RecycleView的适配器
+        adapter = new HomeAdapter(mContext,homeBean.getResult());
+        rvHome.setAdapter(adapter);
+        //设置布局管理器
+        rvHome.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
+
+
     }
 
     @Override
