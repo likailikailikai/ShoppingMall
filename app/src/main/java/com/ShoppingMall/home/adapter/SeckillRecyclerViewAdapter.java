@@ -15,13 +15,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
  * Created by 情v枫 on 2017/2/25.
  */
 
-public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecyclerViewAdapter.ViewHolder> {
+public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecyclerViewAdapter.ViewHolder>{
     private final Context mContext;
     private final List<HomeBean.ResultEntity.SeckillInfoEntity.ListEntity> datas;
 
@@ -41,8 +42,10 @@ public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecy
 
         //根据位置得到数据
         HomeBean.ResultEntity.SeckillInfoEntity.ListEntity listEntity = datas.get(position);
+
         //绑定数据
         holder.tvCoverPrice.setText("￥"+listEntity.getCover_price());
+
         holder.tvOriginPrice.setText("￥"+listEntity.getOrigin_price());
         Glide.with(mContext).load(Constants.BASE_URL_IMAGE+listEntity.getFigure()).into(holder.ivFigure);
 
@@ -54,7 +57,7 @@ public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecy
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.iv_figure)
         ImageView ivFigure;
         @InjectView(R.id.tv_cover_price)
@@ -64,8 +67,28 @@ public class SeckillRecyclerViewAdapter extends RecyclerView.Adapter<SeckillRecy
         @InjectView(R.id.ll_root)
         LinearLayout llRoot;
 
-         ViewHolder(View view) {
+         ViewHolder(final View view) {
             super(view);
+             ButterKnife.inject(this,view);
+             //设置每条的点击事件
+             view.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     if(listener != null) {
+                         listener.onItemClick(view,getLayoutPosition());
+                     }
+                 }
+             });
         }
+    }
+    //点击item 的接口
+    public interface OnItemClickListener{
+        public void onItemClick(View v,int position);
+    }
+    private  OnItemClickListener listener;
+
+    //设置item的点击事件
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener=listener;
     }
 }
