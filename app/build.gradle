@@ -32,4 +32,5 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.9'  //最新版本
     compile 'com.alibaba:fastjson:1.1.55.android'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.zhy:magic-viewpager:1.0.1'
 }

@@ -42,6 +42,7 @@ public class HomeFragment extends BaseFragment {
     private HomeAdapter adapter;
 
 
+
     @Override
     public View initView() {
         Log.e("TAG", "主页视图被初始化了");
@@ -58,7 +59,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
-
         getDataFromNet();
 
     }
@@ -66,7 +66,7 @@ public class HomeFragment extends BaseFragment {
         OkHttpUtils
                 .get()
                 .url(Constants.HOME_URL)
-                .id(100)
+
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -97,7 +97,6 @@ public class HomeFragment extends BaseFragment {
         rvHome.setAdapter(adapter);
         //设置布局管理器
         rvHome.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
-
 
     }
 
