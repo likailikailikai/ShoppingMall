@@ -71,9 +71,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
     public static final int HOT = 5;
     private final LayoutInflater inflater;
 
+
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 
     /**
@@ -133,6 +134,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         } else if (viewType == RECOMMEND) {
             return new RecommendViewHolder(mContext, inflater.inflate(R.layout.recommend_item, null));
         } else if (viewType == HOT) {
+            return new HotViewHolder(mContext, inflater.inflate(R.layout.hot_item, null));
         }
         return null;
     }
@@ -164,6 +166,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             RecommendViewHolder viewHolder = (RecommendViewHolder) holder;
             viewHolder.setData(result.getRecommend_info());
         } else if (getItemViewType(position) == HOT) {
+            HotViewHolder viewHolder = (HotViewHolder) holder;
+            viewHolder.setData(result.getHot_info());
         }
     }
 
@@ -328,12 +332,39 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
 
             //设置点击事件
-           gvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-               @Override
-               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                   Toast.makeText(mContext, "position=="+recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
-               }
-           });
+            gvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "position==" + recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    class HotViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.tv_more_hot)
+        TextView tvMoreHot;
+        @InjectView(R.id.gv_hot)
+        GridView gvHot;
+        HotGridViewAdapter adapter;
+        public HotViewHolder(Context mContext, View itemView) {
+            super(itemView);
+            ButterKnife.inject(this,itemView);
+        }
+
+        public void setData(List<HomeBean.ResultEntity.HotInfoEntity> hot_info) {
+            //设置适配器
+            adapter = new HotGridViewAdapter(mContext,hot_info);
+            gvHot.setAdapter(adapter);
+
+            //设置item的点击事件
+            gvHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "position=="+position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
     }
 }
