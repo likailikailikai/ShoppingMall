@@ -69,7 +69,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
     private final LayoutInflater inflater;
 
 
-
     @Override
     public int getItemCount() {
         return 3;
@@ -239,12 +238,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         public ActViewHolder(Context mContext, View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
 
         public void setData(List<HomeBean.ResultEntity.ActInfoEntity> act_info) {
             //设置viewpager的适配器
-            adapter = new ViewPagerAdapter(mContext,act_info);
+            adapter = new ViewPagerAdapter(mContext, act_info);
 
             //美化viewpager库
             actViewpager.setPageMargin(20);//间距
@@ -254,6 +253,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
             actViewpager.setPageTransformer(true, new RotateYTransformer());
 
             //设置点击事件
+            adapter.setOnItemClickListener(new ViewPagerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
         }
     }
