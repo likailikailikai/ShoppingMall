@@ -2,6 +2,7 @@ package com.ShoppingMall.home.adapter;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.iwgang.countdownview.CountdownView;
 
 /**
  * Created by 情v枫 on 2017/2/23.
@@ -68,10 +71,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
     public static final int HOT = 5;
     private final LayoutInflater inflater;
 
-
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 
     /**
@@ -127,6 +129,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         } else if (viewType == ACT) {
             return new ActViewHolder(mContext, inflater.inflate(R.layout.act_item, null));
         } else if (viewType == SECKILL) {
+            return new SeckillViewHolder(mContext, inflater.inflate(R.layout.seckill_item, null));
         } else if (viewType == RECOMMEND) {
         } else if (viewType == HOT) {
         }
@@ -154,6 +157,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
             ActViewHolder viewHolder = (ActViewHolder) holder;
             viewHolder.setData(result.getAct_info());
         } else if (getItemViewType(position) == SECKILL) {
+            SeckillViewHolder viewHolder = (SeckillViewHolder) holder;
+            viewHolder.setData(result.getSeckill_info());
         } else if (getItemViewType(position) == RECOMMEND) {
         } else if (getItemViewType(position) == HOT) {
         }
@@ -260,6 +265,33 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
 
+
+        }
+    }
+
+    class SeckillViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.countdownview)
+        CountdownView countdownview;
+        @InjectView(R.id.tv_more_seckill)
+        TextView tvMoreSeckill;
+        @InjectView(R.id.rv_seckill)
+        RecyclerView rvSeckill;
+        SeckillRecyclerViewAdapter adapter;
+
+        public SeckillViewHolder(Context mContext, View itemView) {
+            super(itemView);
+            ButterKnife.inject(this,itemView);
+        }
+
+        public void setData(HomeBean.ResultEntity.SeckillInfoEntity seckill_info) {
+            //1、设置RecycleView的适配器
+            adapter = new SeckillRecyclerViewAdapter(mContext,seckill_info);
+            rvSeckill.setAdapter(adapter);
+
+            //设置布局管理器
+            rvSeckill.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
+
+            //设置点击事件
 
         }
     }
