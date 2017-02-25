@@ -292,7 +292,16 @@ public class HomeAdapter extends RecyclerView.Adapter {
             rvSeckill.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false));
 
             //设置点击事件
-
+            adapter.setOnItemClickListener(new SeckillRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    Toast.makeText(mContext, "position=="+position, Toast.LENGTH_SHORT).show();
+                }
+            });
+            //设置秒杀的事件
+            countdownview.setTag("test1");
+            long duration = Long.parseLong(seckill_info.getEnd_time())-Long.parseLong(seckill_info.getStart_time());
+            countdownview.start(duration);
 
         }
     }
