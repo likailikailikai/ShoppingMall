@@ -1,6 +1,7 @@
 package com.ShoppingMall.home.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
+import com.ShoppingMall.app.GoodsInfoActivity;
+import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.home.bean.HomeBean;
 import com.ShoppingMall.utils.Constants;
 import com.bumptech.glide.Glide;
@@ -37,6 +40,7 @@ import cn.iwgang.countdownview.CountdownView;
 public class HomeAdapter extends RecyclerView.Adapter {
 
 
+    public static String GOODS_BEAN = "goodsbean";
     private final Context mContext;
     private final HomeBean.ResultEntity result;
 
@@ -236,8 +240,10 @@ public class HomeAdapter extends RecyclerView.Adapter {
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-                    int realPosition = position - 1;
-                    Toast.makeText(mContext, "realPosition==" + realPosition, Toast.LENGTH_SHORT).show();
+                    GoodsBean goodsBean = new GoodsBean();
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    intent.putExtra(GOODS_BEAN,goodsBean);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -335,7 +341,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
             gvRecommend.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(mContext, "position==" + recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "position==" + recommend_info.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+                    HomeBean.ResultEntity.RecommendInfoEntity infoEntity = recommend_info.get(position);
+                    //传递数据
+                    GoodsBean goodsBean = new GoodsBean();
+                    goodsBean.setName(infoEntity.getName());
+                    goodsBean.setCover_price(infoEntity.getCover_price());
+                    goodsBean.setFigure(infoEntity.getFigure());
+                    goodsBean.setProduct_id(infoEntity.getProduct_id());
+
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    intent.putExtra(GOODS_BEAN, goodsBean);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -347,21 +365,22 @@ public class HomeAdapter extends RecyclerView.Adapter {
         @InjectView(R.id.gv_hot)
         GridView gvHot;
         HotGridViewAdapter adapter;
+
         public HotViewHolder(Context mContext, View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
 
         public void setData(List<HomeBean.ResultEntity.HotInfoEntity> hot_info) {
             //设置适配器
-            adapter = new HotGridViewAdapter(mContext,hot_info);
+            adapter = new HotGridViewAdapter(mContext, hot_info);
             gvHot.setAdapter(adapter);
 
             //设置item的点击事件
             gvHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(mContext, "position=="+position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
                 }
             });
 

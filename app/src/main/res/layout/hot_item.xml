@@ -35,7 +35,7 @@
     </LinearLayout>
 
 
-    <com.atguigu.shoppingmall_1020.home.view.MyGridView
+    <com.ShoppingMall.home.view.MyGridView
         android:id="@+id/gv_hot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
