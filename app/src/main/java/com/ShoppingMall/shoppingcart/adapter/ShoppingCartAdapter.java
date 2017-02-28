@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ShoppingMall.R;
 import com.ShoppingMall.home.bean.GoodsBean;
+import com.ShoppingMall.shoppingcart.utils.CartStorage;
 import com.ShoppingMall.shoppingcart.view.AddSubView;
 import com.ShoppingMall.utils.Constants;
 import com.bumptech.glide.Glide;
@@ -125,6 +126,25 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             checkboxDeleteAll.setChecked(false);
         }
     }
+
+    //删除数据
+    public void deleteData(){
+        if(datas != null && datas.size()>0) {
+            for (int i=0;i<datas.size();i++){
+                GoodsBean goodsBean= datas.get(i);
+                if(goodsBean.isChecked()) {
+                    //1、内存中删除
+                    datas.remove(goodsBean);
+                    //2、本地也好保持
+                    CartStorage.getInstance(mContext).deleteData(goodsBean);
+                    //刷新数据
+                    notifyItemRemoved(i);
+                    i--;
+                }
+            }
+        }
+    }
+
 
     public void checkAll_none(boolean isChecked){
         if(datas != null &&datas.size()>0) {
