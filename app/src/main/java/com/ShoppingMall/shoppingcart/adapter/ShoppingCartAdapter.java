@@ -26,12 +26,38 @@ import butterknife.InjectView;
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder> {
     private final Context mContext;
     private final List<GoodsBean> datas;
+    private final TextView tvShopcartTotal;
+    private final CheckBox checkboxAll;
+    private final CheckBox checkboxDeleteAll;
 
 
-    public ShoppingCartAdapter(Context mContext, List<GoodsBean> list) {
+    public ShoppingCartAdapter(Context mContext, List<GoodsBean> list, TextView tvShopcartTotal, CheckBox checkboxAll, CheckBox checkboxDeleteAll) {
         this.mContext = mContext;
         this.datas = list;
+        this.tvShopcartTotal = tvShopcartTotal;
+        this.checkboxAll = checkboxAll;
+        this.checkboxDeleteAll = checkboxDeleteAll;
+        showTotalPrice();
 
+    }
+
+    public void showTotalPrice() {
+        //显示总价格
+        tvShopcartTotal.setText("总计：" + getTotalPrice());
+    }
+
+    //返回总价格
+    private double getTotalPrice() {
+        double totalPrice = 0;
+        if (datas != null && datas.size() > 0) {
+            for (int i = 0; i < datas.size(); i++) {
+                GoodsBean goodsBean = datas.get(i);
+                if (goodsBean.isChecked()) {
+                    totalPrice += Double.parseDouble(goodsBean.getCover_price()) * goodsBean.getNumber();
+                }
+            }
+        }
+        return totalPrice;
     }
 
     /**
@@ -72,6 +98,34 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         return datas.size();
     }
 
+    /**
+     * 检验是否全选
+     */
+    public void checkAll() {
+        if (datas != null && datas.size() > 0) {
+            int number = 0;
+            for (int i = 0; i < datas.size(); i++) {
+                GoodsBean goodsBean = datas.get(i);
+                if (!goodsBean.isChecked()) {
+                    //只要有一个不勾选
+                    checkboxAll.setChecked(false);
+                    checkboxDeleteAll.setChecked(false);
+                } else {
+                    //勾选
+                    number++;
+                }
+            }
+            if (datas.size() == number) {
+                checkboxAll.setChecked(true);
+                checkboxDeleteAll.setChecked(true);
+            }
+        } else {
+            //没有数据
+            checkboxAll.setChecked(false);
+            checkboxDeleteAll.setChecked(false);
+        }
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.cb_gov)
@@ -87,7 +141,28 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         MyViewHolder(View view) {
             super(view);
-            ButterKnife.inject(this,view);
+            ButterKnife.inject(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClickListener(v,getLayoutPosition());
+                    }
+                }
+            });
         }
+    }
+
+    //回调事件的监听
+    private OnItemClickListener itemClickListener;
+
+    //点击item监听
+    public interface OnItemClickListener {
+        public void onItemClickListener(View view, int position);
+    }
+
+    //设置item监听
+    public void setOnItemClickListener(OnItemClickListener l) {
+        this.itemClickListener = l;
     }
 }

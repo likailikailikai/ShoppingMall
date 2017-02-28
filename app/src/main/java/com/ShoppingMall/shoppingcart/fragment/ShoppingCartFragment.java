@@ -61,6 +61,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @InjectView(R.id.ll_empty_shopcart)
     LinearLayout llEmptyShopcart;
     private ShoppingCartAdapter adapter;
+    List<GoodsBean> list;
 
     @Override
     public View initView() {
@@ -78,17 +79,34 @@ public class ShoppingCartFragment extends BaseFragment {
         super.initData();
         Log.e("TAG", "购物车数据被初始化了");
 
-        List<GoodsBean> list = CartStorage.getInstance(mContext).getAllData();
+        list = CartStorage.getInstance(mContext).getAllData();
         if(list != null && list.size()>0) {
             //购物车有数据
             llEmptyShopcart.setVisibility(View.GONE);
-            adapter = new ShoppingCartAdapter(mContext,list);
+            adapter = new ShoppingCartAdapter(mContext,list,tvShopcartTotal,checkboxAll,checkboxDeleteAll);
             //设置RecycleView的适配器
             recyclerview.setAdapter(adapter);
             //布局管理器
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
 
             //设置点击事件
+            adapter.setOnItemClickListener(new ShoppingCartAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClickListener(View view, int position) {
+                    //设置bean对象状态去反
+                    GoodsBean goodsBean = list.get(position);
+                    goodsBean.setChecked(!goodsBean.isChecked());
+
+                    adapter.notifyItemChanged(position);
+
+                    //刷新价格
+                    adapter.showTotalPrice();
+
+                    //校验是否全选
+                    adapter.checkAll();
+                }
+            });
+            adapter.checkAll();
 
         }else{
             //没有数据
