@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.ShoppingMall.base.BaseFragment;
 import com.ShoppingMall.home.bean.GoodsBean;
-import com.ShoppingMall.utils.CartStorage;
+import com.ShoppingMall.shoppingcart.utils.CartStorage;
 
 /**
  * Created by 情v枫 on 2017/2/22.

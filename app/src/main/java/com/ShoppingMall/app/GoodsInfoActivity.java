@@ -4,7 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -20,7 +19,7 @@ import android.widget.Toast;
 import com.ShoppingMall.R;
 import com.ShoppingMall.home.adapter.HomeAdapter;
 import com.ShoppingMall.home.bean.GoodsBean;
-import com.ShoppingMall.utils.CartStorage;
+import com.ShoppingMall.shoppingcart.utils.CartStorage;
 import com.ShoppingMall.utils.Constants;
 import com.bumptech.glide.Glide;
 
