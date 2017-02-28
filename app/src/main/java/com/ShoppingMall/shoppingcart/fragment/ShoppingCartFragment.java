@@ -145,7 +145,12 @@ public class ShoppingCartFragment extends BaseFragment {
                 Toast.makeText(mContext, "编辑", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.checkbox_all:
-                Toast.makeText(mContext, "全选", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "全选", Toast.LENGTH_SHORT).show();
+                boolean isChecked = checkboxAll.isChecked();
+                //全选和反选
+                adapter.checkAll_none(isChecked);
+                //显示总价格
+                adapter.showTotalPrice();
                 break;
             case R.id.btn_check_out:
                 Toast.makeText(mContext, "结算", Toast.LENGTH_SHORT).show();
