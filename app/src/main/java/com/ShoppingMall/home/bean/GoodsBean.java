@@ -73,4 +73,8 @@ public class GoodsBean implements Serializable{
                 ", number=" + number +
                 '}';
     }
+
+    public boolean isChecked() {
+        return false;
+    }
 }
