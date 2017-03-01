@@ -53,7 +53,7 @@ public class WebViewActivity extends AppCompatActivity {
         tvTitle.setText(webViewBean.getName());
         //加载链接地址
         WebSettings webSettings = webview.getSettings();
-//设置支持JS
+        //设置支持JS
         webSettings.setJavaScriptEnabled(true);
         //设置添加缩放按钮
         webSettings.setBuiltInZoomControls(true);
