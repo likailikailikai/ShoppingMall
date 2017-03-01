@@ -90,8 +90,10 @@ public class WebViewActivity extends AppCompatActivity {
     class MyJavascriptInterface {
         @JavascriptInterface
         public void jumpForAndroid(String data) {
-            Toast.makeText(WebViewActivity.this, "data==" + data, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(WebViewActivity.this, "data==" + data, Toast.LENGTH_SHORT).show();
+
         }
+
 
 
     }
