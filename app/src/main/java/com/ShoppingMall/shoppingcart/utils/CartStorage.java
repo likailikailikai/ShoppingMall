@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * Created by 情v枫 on 2017/2/27.
- *
  */
 
 public class CartStorage {
@@ -100,6 +99,7 @@ public class CartStorage {
 
     /**
      * 添加数据
+     *
      * @param goodsBean
      */
     public void addData(GoodsBean goodsBean) {
@@ -107,7 +107,7 @@ public class CartStorage {
         GoodsBean tempGoodsBean = sparseArray.get(Integer.parseInt(goodsBean.getProduct_id()));
         //已经保存过
         if (tempGoodsBean != null) {
-            tempGoodsBean.setNumber(tempGoodsBean.getNumber() + goodsBean.getNumber());
+            tempGoodsBean.setNumber(tempGoodsBean.getNumber());
         } else {
             //没有添加过
             tempGoodsBean = goodsBean;
@@ -123,9 +123,10 @@ public class CartStorage {
 
     /**
      * 删除数据
+     *
      * @param goodsBean
      */
-    public  void deleteData(GoodsBean goodsBean){
+    public void deleteData(GoodsBean goodsBean) {
         //1.删除数据
         sparseArray.delete(Integer.parseInt(goodsBean.getProduct_id()));
 
@@ -135,11 +136,12 @@ public class CartStorage {
 
     /**
      * 修改数据
+     *
      * @param goodsBean
      */
-    public  void updateData(GoodsBean goodsBean){
+    public void updateData(GoodsBean goodsBean) {
         //1.删除数据
-        sparseArray.put(Integer.parseInt(goodsBean.getProduct_id()),goodsBean);
+        sparseArray.put(Integer.parseInt(goodsBean.getProduct_id()), goodsBean);
 
         //2.保持到本地
         saveLocal();
@@ -152,14 +154,15 @@ public class CartStorage {
         //1.把sparseArray转成List
         List<GoodsBean> goodsBeanList = sparseArrayToList();
         //2.使用Gson把List转json的String类型数据
-        String  savaJson = new Gson().toJson(goodsBeanList);
+        String savaJson = new Gson().toJson(goodsBeanList);
         //3.使用CacheUtils缓存数据
-        CacheUtils.setString(mContext,JSON_CART,savaJson);
+        CacheUtils.setString(mContext, JSON_CART, savaJson);
 
     }
 
     /**
      * 把sparseArray转成List
+     *
      * @return
      */
     private List<GoodsBean> sparseArrayToList() {
@@ -172,5 +175,16 @@ public class CartStorage {
         }
 
         return goodsBeanList;
+    }
+
+    /**
+     * 是否在购物车中存在
+     *
+     * @param product_id
+     * @return
+     */
+    public GoodsBean findDete(String product_id) {
+        return sparseArray.get(Integer.parseInt(product_id));
+
     }
 }
