@@ -69,8 +69,7 @@ public class CartStorage {
 
         if (!TextUtils.isEmpty(json)) {
             //把它转化成列表
-            goodsBeens = new Gson().fromJson(json, new TypeToken<List<GoodsBean>>() {
-
+            goodsBeens = new Gson().fromJson(json,new TypeToken<List<GoodsBean>>(){
             }.getType());
         }
         //把json数据解析成List数据

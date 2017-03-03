@@ -1,29 +1,44 @@
 package com.ShoppingMall.type.fragment;
 
-import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.ShoppingMall.R;
 import com.ShoppingMall.base.BaseFragment;
+import com.flyco.tablayout.SegmentTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by 情v枫 on 2017/2/22.
- *
+ * <p>
  * 分类 Fragment
  */
 
 public class TypeFragment extends BaseFragment {
-    private TextView textView;
+
+    @InjectView(R.id.tl_1)
+    SegmentTabLayout tl1;
+    @InjectView(R.id.iv_type_search)
+    ImageView ivTypeSearch;
+    @InjectView(R.id.fl_type)
+    FrameLayout flType;
+    private String[] titles = {"分类","标签"};
 
     @Override
     public View initView() {
-        textView = new TextView(mContext);
-        textView.setTextSize(20);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(Color.RED);
-        return textView;
+        View view = View.inflate(mContext, R.layout.fragment_type, null);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
     /**
@@ -34,6 +49,28 @@ public class TypeFragment extends BaseFragment {
     public void initData() {
         super.initData();
         Log.e("TAG", "分类的数据被初始化了");
-        textView.setText("分类内容");
+        tl1.setTabData(titles);
+        tl1.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                Toast.makeText(mContext, "position=="+position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.iv_type_search)
+    public void onClick() {
     }
 }
