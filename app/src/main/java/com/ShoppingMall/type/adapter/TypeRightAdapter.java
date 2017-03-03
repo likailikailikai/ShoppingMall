@@ -1,6 +1,7 @@
 package com.ShoppingMall.type.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
+import com.ShoppingMall.app.GoodsInfoActivity;
+import com.ShoppingMall.home.adapter.HomeAdapter;
+import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.type.bean.TypeBean;
 import com.ShoppingMall.utils.Constants;
 import com.ShoppingMall.utils.DensityUtil;
@@ -91,7 +95,7 @@ public class TypeRightAdapter extends RecyclerView.Adapter {
             viewHolder.setData(hot_product_list);
         } else if (getItemViewType(position) == COMMON) {
             CommonViewHolder viewHolder = (CommonViewHolder) holder;
-            int realPostion = position;
+            int realPostion = position - 1;
             viewHolder.setData(child.get(realPostion));
         }
     }
@@ -103,14 +107,15 @@ public class TypeRightAdapter extends RecyclerView.Adapter {
         TextView tvOrdinaryRight;
         @InjectView(R.id.ll_root)
         LinearLayout llRoot;
+
         public CommonViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
 
         public void setData(final TypeBean.ResultEntity.ChildEntity childEntity) {
             //1、请求图片
-            Glide.with(mContext).load(Constants.BASE_URL_IMAGE + childEntity.getPic()).into(ivOrdinaryRight);
+            Glide.with(mContext).load(Constants.BASE_URL_IMAGE + childEntity.getPic()).placeholder(R.drawable.new_img_loading_2).into(ivOrdinaryRight);
 
             //2、设置文本
             tvOrdinaryRight.setText(childEntity.getName());
@@ -118,7 +123,7 @@ public class TypeRightAdapter extends RecyclerView.Adapter {
             llRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, ""+ childEntity.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "" + childEntity.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -194,7 +199,23 @@ public class TypeRightAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         int position = (int) v.getTag();
 
-                        Toast.makeText(mContext, "position==" + hot_product_list.get(position).getCover_price(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, "position==" + hot_product_list.get(position).getCover_price(), Toast.LENGTH_SHORT).show();
+                        String cover_price = hot_product_list.get(position).getCover_price();
+                        String name = hot_product_list.get(position).getName();
+                        String figure = hot_product_list.get(position).getFigure();
+                        String product_id = hot_product_list.get(position).getProduct_id();
+
+                        //创建商品Bean对象
+                        GoodsBean goodsBean = new GoodsBean();
+                        goodsBean.setProduct_id(product_id);
+                        goodsBean.setFigure(figure);
+                        goodsBean.setCover_price(cover_price);
+                        goodsBean.setName(name);
+
+                        Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                        intent.putExtra(HomeAdapter.GOODS_BEAN, goodsBean);
+                        mContext.startActivity(intent);
+
                     }
                 });
 

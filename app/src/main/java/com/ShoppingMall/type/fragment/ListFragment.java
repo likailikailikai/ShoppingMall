@@ -41,7 +41,7 @@ public class ListFragment extends BaseFragment {
     RecyclerView rvRight;
     //网络请求得到数据
     private String[] titles = new String[]{"小裙子", "上衣", "下装", "外套", "配件", "包包", "装扮", "居家宅品",
-                        "办公文具", "数码周边", "游戏专区"};
+            "办公文具", "数码周边", "游戏专区"};
 
     //联网的url集合
     private String[] urls = new String[]{Constants.SKIRT_URL, Constants.JACKET_URL, Constants.PANTS_URL, Constants.OVERCOAT_URL,
@@ -68,7 +68,7 @@ public class ListFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
-        leftAdapter = new TypeLeftAdapter(mContext,titles);
+        leftAdapter = new TypeLeftAdapter(mContext, titles);
         lvLeft.setAdapter(leftAdapter);
 
         //设置item点击事件
@@ -79,6 +79,9 @@ public class ListFragment extends BaseFragment {
                 leftAdapter.changeSelected(position);
                 //2、适配器刷新
                 leftAdapter.notifyDataSetChanged();
+
+                //联网请求
+                getDataFromNet(urls[position]);
             }
         });
         //联网请求
@@ -93,12 +96,12 @@ public class ListFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("TAG","联网失败了"+e.getMessage());
+                        Log.e("TAG", "联网失败了" + e.getMessage());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("TAG","裙子的数据联网成功了==");
+                        Log.e("TAG", "裙子的数据联网成功了==");
                         processData(response);
 
                     }
@@ -107,26 +110,27 @@ public class ListFragment extends BaseFragment {
 
     /**
      * 解析json数据--fastjson
+     *
      * @param response
      */
     private void processData(String response) {
-        TypeBean typeBean = JSON.parseObject(response,TypeBean.class);
+        TypeBean typeBean = JSON.parseObject(response, TypeBean.class);
 //        Toast.makeText(mContext, ""+typeBean.getResult().get(0).getName(), Toast.LENGTH_SHORT).show();
         List<TypeBean.ResultEntity> result = typeBean.getResult();
-        if(result != null && result.size()>0) {
+        if (result != null && result.size() > 0) {
             //设置RecycleView 的适配器
-            rightAdapter = new TypeRightAdapter(mContext,result);
+            rightAdapter = new TypeRightAdapter(mContext, result);
             rvRight.setAdapter(rightAdapter);
 
 
             //设置布局管理器
-            GridLayoutManager manager =  new GridLayoutManager(mContext,3);
+            GridLayoutManager manager = new GridLayoutManager(mContext, 3);
             manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if(position == 0) {
+                    if (position == 0) {
                         return 3;
-                    }else{
+                    } else {
                         return 1;
                     }
                 }
@@ -134,7 +138,6 @@ public class ListFragment extends BaseFragment {
             rvRight.setLayoutManager(manager);
         }
     }
-
 
 
     @Override
