@@ -1,5 +1,6 @@
 package com.ShoppingMall.community.adatper;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,12 @@ import com.ShoppingMall.R;
 import com.ShoppingMall.community.bean.NewPostBean;
 import com.ShoppingMall.utils.Constants;
 import com.bumptech.glide.Glide;
+import com.opendanmaku.DanmakuItem;
+import com.opendanmaku.DanmakuView;
+import com.opendanmaku.IDanmakuItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -57,7 +63,7 @@ public class NewPostListViewAdapter extends BaseAdapter {
             convertView = View.inflate(mContext, R.layout.item_listview_newpost, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -73,8 +79,30 @@ public class NewPostListViewAdapter extends BaseAdapter {
         viewHolder.tvCommunityLikes.setText(entity.getLikes());
         viewHolder.tvCommunityComments.setText(entity.getComments());
 
+        //显示弹幕
+        List<String> strings = entity.getComment_list();
+        if (strings != null && strings.size() > 0) {
+            //有弹幕数据
+            List<IDanmakuItem> list = initItems(viewHolder.danmakuView, strings);
+            Collections.shuffle(list);
+            viewHolder.danmakuView.addItem(list, true);
+            viewHolder.danmakuView.show();
+            viewHolder.danmakuView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.danmakuView.hide();
+            viewHolder.danmakuView.setVisibility(View.GONE);
+        }
 
         return convertView;
+    }
+
+    private List<IDanmakuItem> initItems(DanmakuView danmakuView, List<String> strings) {
+        List<IDanmakuItem> list = new ArrayList<>();
+        for (int i = 0; i < strings.size(); i++) {
+            IDanmakuItem item = new DanmakuItem(mContext, strings.get(i), danmakuView.getWidth());
+            list.add(item);
+        }
+        return null;
     }
 
     static class ViewHolder {
@@ -94,6 +122,8 @@ public class NewPostListViewAdapter extends BaseAdapter {
         TextView tvCommunityLikes;
         @InjectView(R.id.tv_community_comments)
         TextView tvCommunityComments;
+        @InjectView(R.id.danmakuView)
+        DanmakuView danmakuView;
 
         ViewHolder(View view) {
             ButterKnife.inject(this, view);
