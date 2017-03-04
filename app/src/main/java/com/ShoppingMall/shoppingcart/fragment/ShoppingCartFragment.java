@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ShoppingMall.R;
 import com.ShoppingMall.base.BaseFragment;
 import com.ShoppingMall.home.bean.GoodsBean;
+import com.ShoppingMall.home.fragmen.HomeFragment;
 import com.ShoppingMall.shoppingcart.adapter.ShoppingCartAdapter;
 import com.ShoppingMall.shoppingcart.utils.CartStorage;
 import com.ShoppingMall.shoppingcart.utils.PayResult;
