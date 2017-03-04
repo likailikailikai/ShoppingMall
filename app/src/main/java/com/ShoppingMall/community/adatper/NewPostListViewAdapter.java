@@ -102,7 +102,7 @@ public class NewPostListViewAdapter extends BaseAdapter {
             IDanmakuItem item = new DanmakuItem(mContext, strings.get(i), danmakuView.getWidth());
             list.add(item);
         }
-        return null;
+        return list;
     }
 
     static class ViewHolder {
