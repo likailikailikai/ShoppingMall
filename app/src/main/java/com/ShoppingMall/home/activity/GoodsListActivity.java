@@ -1,6 +1,5 @@
 package com.ShoppingMall.home.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,13 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
-import com.ShoppingMall.app.GoodsInfoActivity;
 import com.ShoppingMall.home.adapter.GoodsListAdapter;
-import com.ShoppingMall.home.adapter.HomeAdapter;
-import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.home.bean.TypeListBean;
 import com.ShoppingMall.home.view.SpaceItemDecoration;
-import com.ShoppingMall.type.bean.TypeBean;
 import com.ShoppingMall.utils.Constants;
 import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -234,7 +230,7 @@ public class GoodsListActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.ib_goods_list_back, R.id.tv_goods_list_search, R.id.ib_goods_list_home, R.id.tv_goods_list_sort, R.id.tv_goods_list_price, R.id.tv_goods_list_select})
+    @OnClick({R.id.ib_goods_list_back, R.id.tv_goods_list_search, R.id.ib_goods_list_home, R.id.tv_goods_list_sort, R.id.tv_goods_list_price, R.id.tv_goods_list_select, R.id.ib_drawer_layout_back, R.id.ib_drawer_layout_confirm, R.id.rl_select_price, R.id.rl_select_recommend_theme, R.id.rl_select_type, R.id.btn_drawer_layout_cancel, R.id.btn_drawer_layout_confirm, R.id.btn_drawer_theme_cancel, R.id.btn_drawer_theme_confirm, R.id.btn_drawer_type_cancel, R.id.btn_drawer_type_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ib_goods_list_back:
@@ -244,7 +240,8 @@ public class GoodsListActivity extends AppCompatActivity {
                 Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_goods_list_home:
-                Toast.makeText(this, "主页面", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "主页面", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             case R.id.tv_goods_list_sort:
 //                Toast.makeText(this, "综合排序", Toast.LENGTH_SHORT).show();
@@ -268,10 +265,10 @@ public class GoodsListActivity extends AppCompatActivity {
 
 
                 click_count++;
-                if(click_count % 2 == 1) {
+                if (click_count % 2 == 1) {
                     //箭头向下红
                     ivGoodsListArrow.setBackgroundResource(R.drawable.new_price_sort_desc);
-                }else{
+                } else {
                     //箭头向上红
                     ivGoodsListArrow.setBackgroundResource(R.drawable.new_price_sort_asc);
                 }
@@ -286,9 +283,88 @@ public class GoodsListActivity extends AppCompatActivity {
                 //综合设置默认
                 tvGoodsListSort.setTextColor(Color.parseColor("#333538"));
                 //价格设置默认
-                            tvGoodsListPrice.setTextColor(Color.parseColor("#333538"));
+                tvGoodsListPrice.setTextColor(Color.parseColor("#333538"));
+                //打开DrawLayout
+                dlLeft.openDrawer(Gravity.RIGHT);
                 break;
+            case R.id.ib_drawer_layout_back:
+                //关闭DrawLayout
+                dlLeft.closeDrawers();
+                break;
+            case R.id.ib_drawer_layout_confirm:
+                Toast.makeText(this, "筛选-确定", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rl_select_price://显示-价格
+                llPriceRoot.setVisibility(View.VISIBLE);
+                showPriceLayout();
+                break;
+            case R.id.rl_select_recommend_theme://主题
+                llThemeRoot.setVisibility(View.VISIBLE);
+                showThemeLayout();
+                break;
+            case R.id.rl_select_type://类别
+                llTypeRoot.setVisibility(View.VISIBLE);
+                showTypeLayout();
+                break;
+            case R.id.btn_drawer_layout_cancel:
+                llSelectRoot.setVisibility(View.VISIBLE);
+                showSelectorLayout();
+                break;
+            case R.id.btn_drawer_layout_confirm:
+                Toast.makeText(this, "价格-确定", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_drawer_theme_cancel:
+                llSelectRoot.setVisibility(View.VISIBLE);
+                showSelectorLayout();
+                break;
+            case R.id.btn_drawer_theme_confirm:
+                Toast.makeText(this, "主题-确定", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_drawer_type_cancel:
+                llSelectRoot.setVisibility(View.VISIBLE);
+                showSelectorLayout();
+                break;
+            case R.id.btn_drawer_type_confirm:
+                Toast.makeText(this, "类别-确定", Toast.LENGTH_SHORT).show();
+                break;
+
         }
+    }
+
+    /**
+     * 帅选界面
+     */
+    private void showSelectorLayout() {
+        llPriceRoot.setVisibility(View.GONE);
+        llThemeRoot.setVisibility(View.GONE);
+        llTypeRoot.setVisibility(View.GONE);
+    }
+
+    /*
+    价格界面
+     */
+    private void showTypeLayout() {
+        llSelectRoot.setVisibility(View.GONE);
+        llPriceRoot.setVisibility(View.GONE);
+        llTypeRoot.setVisibility(View.GONE);
+    }
+
+    /*
+    主题界面
+     */
+    private void showThemeLayout() {
+        llSelectRoot.setVisibility(View.GONE);
+        llPriceRoot.setVisibility(View.GONE);
+        llTypeRoot.setVisibility(View.GONE);
+    }
+
+    /*
+    类别界面
+     */
+    private void showPriceLayout() {
+        llSelectRoot.setVisibility(View.GONE);
+        llPriceRoot.setVisibility(View.GONE);
+        llThemeRoot.setVisibility(View.GONE);
     }
 
     private void getDataFromNet(String url) {
@@ -328,5 +404,6 @@ public class GoodsListActivity extends AppCompatActivity {
 
 
     }
+
 
 }
