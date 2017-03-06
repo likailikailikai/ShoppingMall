@@ -192,7 +192,8 @@ public class GoodsInfoActivity extends AppCompatActivity {
 
                 break;
             case R.id.tv_more_home:
-                Toast.makeText(this, "主页", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "主页", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             case R.id.btn_more:
                 Toast.makeText(this, "消失更多页面", Toast.LENGTH_SHORT).show();

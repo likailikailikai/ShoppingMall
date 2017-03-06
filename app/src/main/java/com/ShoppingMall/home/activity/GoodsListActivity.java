@@ -1,5 +1,6 @@
 package com.ShoppingMall.home.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -22,8 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
+import com.ShoppingMall.app.GoodsInfoActivity;
 import com.ShoppingMall.home.adapter.ExpandableListViewAdapter;
 import com.ShoppingMall.home.adapter.GoodsListAdapter;
+import com.ShoppingMall.home.adapter.HomeAdapter;
+import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.home.bean.TypeListBean;
 import com.ShoppingMall.home.view.SpaceItemDecoration;
 import com.ShoppingMall.utils.Constants;
@@ -345,7 +349,7 @@ public class GoodsListActivity extends AppCompatActivity {
     }
 
     /**
-     * 帅选界面
+     * 筛选界面
      */
     private void showSelectorLayout() {
         llPriceRoot.setVisibility(View.GONE);
@@ -354,12 +358,13 @@ public class GoodsListActivity extends AppCompatActivity {
     }
 
     /*
-    价格界面
+    类别界面
      */
     private void showTypeLayout() {
         llSelectRoot.setVisibility(View.GONE);
         llPriceRoot.setVisibility(View.GONE);
-        llTypeRoot.setVisibility(View.GONE);
+        llThemeRoot.setVisibility(View.GONE);
+        initExpandableListView();
     }
 
     /*
@@ -372,14 +377,12 @@ public class GoodsListActivity extends AppCompatActivity {
     }
 
     /*
-    类别界面
+    价格界面
      */
     private void showPriceLayout() {
         llSelectRoot.setVisibility(View.GONE);
-        llPriceRoot.setVisibility(View.GONE);
+        llTypeRoot.setVisibility(View.GONE);
         llThemeRoot.setVisibility(View.GONE);
-
-        initExpandableListView();
 
     }
 
@@ -428,8 +431,6 @@ public class GoodsListActivity extends AppCompatActivity {
                 }
             }
         });
-        //
-
     }
 
     private void addInfo(String father, String[] datas) {
@@ -475,6 +476,22 @@ public class GoodsListActivity extends AppCompatActivity {
             recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
 
             recyclerview.addItemDecoration(new SpaceItemDecoration(10));
+            adapter.setOnItemClickListener(new GoodsListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(TypeListBean.ResultBean.PageDataBean data) {
+
+                    GoodsBean goodsBean = new GoodsBean();
+                    goodsBean.setProduct_id(data.getProduct_id());
+                    goodsBean.setName(data.getName());
+                    goodsBean.setCover_price(data.getCover_price());
+                    goodsBean.setFigure(data.getFigure());
+
+                    Intent intent = new Intent(GoodsListActivity.this, GoodsInfoActivity.class);
+                    intent.putExtra(HomeAdapter.GOODS_BEAN, goodsBean);
+                    startActivity(intent);
+
+                }
+            });
         }
 
 
