@@ -1,8 +1,10 @@
 package com.ShoppingMall.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -19,11 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ShoppingMall.R;
+import com.ShoppingMall.app.GoodsInfoActivity;
+import com.ShoppingMall.home.adapter.GoodsListAdapter;
+import com.ShoppingMall.home.adapter.HomeAdapter;
+import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.home.bean.TypeListBean;
+import com.ShoppingMall.home.view.SpaceItemDecoration;
+import com.ShoppingMall.type.bean.TypeBean;
 import com.ShoppingMall.utils.Constants;
 import com.alibaba.fastjson.JSON;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -191,6 +201,8 @@ public class GoodsListActivity extends AppCompatActivity {
             Constants.SHOUSHI_STORE,
     };
 
+    private GoodsListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,7 +255,7 @@ public class GoodsListActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("TAG", "GoodsListActivity的数据联网成功了==" + response);
+                        Log.e("TAG", "GoodsListActivity的数据联网成功了==");
                         processData(response);
                     }
                 });
@@ -251,7 +263,20 @@ public class GoodsListActivity extends AppCompatActivity {
 
     private void processData(String json) {
         TypeListBean bean = JSON.parseObject(json, TypeListBean.class);
-        Log.e("TAG", bean.getResult().getPage_data().get(0).getName());
+//        Log.e("TAG", bean.getResult().getPage_data().get(0).getName());
+        List<TypeListBean.ResultBean.PageDataBean> datas = bean.getResult().getPage_data();
+        if (datas != null && datas.size() > 0) {
+            //有数据-设置适配器
+
+            adapter = new GoodsListAdapter(this, datas);
+            recyclerview.setAdapter(adapter);
+
+            //设置布局管理器
+            recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
+
+            recyclerview.addItemDecoration(new SpaceItemDecoration(10));
+        }
+
 
     }
 
