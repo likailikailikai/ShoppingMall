@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ShoppingMall.R;
 import com.ShoppingMall.app.GoodsInfoActivity;
 import com.ShoppingMall.app.WebViewActivity;
+import com.ShoppingMall.home.activity.GoodsListActivity;
 import com.ShoppingMall.home.bean.GoodsBean;
 import com.ShoppingMall.home.bean.HomeBean;
 import com.ShoppingMall.home.bean.WebViewBean;
@@ -199,7 +200,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
             gvChannel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mContext, "position==" + position, Toast.LENGTH_SHORT).show();
+                    if (position < 9) {
+                        Intent intent = new Intent(mContext, GoodsListActivity.class);
+                        intent.putExtra("position", position);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
 
