@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ShoppingMall.MainActivity;
 import com.ShoppingMall.R;
 import com.ShoppingMall.home.adapter.HomeAdapter;
 import com.ShoppingMall.home.bean.GoodsBean;
@@ -178,7 +179,11 @@ public class GoodsInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "收藏", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_good_info_cart:
-                Toast.makeText(this, "跳转到购物车", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "跳转到购物车", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this,MainActivity.class);
+                intent.putExtra("checkedid",R.id.rb_cart);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.btn_good_info_addcart:
 //                Toast.makeText(this, "添加到购物车", Toast.LENGTH_SHORT).show();

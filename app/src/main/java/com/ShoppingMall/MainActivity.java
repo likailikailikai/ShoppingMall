@@ -1,5 +1,6 @@
 package com.ShoppingMall;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         rgMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_home:
                         position = 0;
                         break;
@@ -89,21 +90,21 @@ public class MainActivity extends AppCompatActivity {
     private void swichFragment(Fragment currentFragment) {
 
         //切换的不是同一个界面
-        if(tempFragment != currentFragment) {
+        if (tempFragment != currentFragment) {
             //得到FragmentManger
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             //如果没有添加就添加
-            if(!currentFragment.isAdded()) {
+            if (!currentFragment.isAdded()) {
                 //缓存的隐藏
-                if(tempFragment != null) {
+                if (tempFragment != null) {
                     ft.hide(tempFragment);
                 }
                 //添加
-                ft.add(R.id.fl_main,currentFragment);
+                ft.add(R.id.fl_main, currentFragment);
 
-            }else{
+            } else {
                 //缓存的隐藏
-                if(tempFragment != null) {
+                if (tempFragment != null) {
                     ft.hide(tempFragment);
                 }
                 //显示
@@ -128,5 +129,10 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(new UserFragment());//添加用户Fragment
     }
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int id = intent.getIntExtra("checkedid", R.id.rb_home);
+        rgMain.check(id);
+    }
 }

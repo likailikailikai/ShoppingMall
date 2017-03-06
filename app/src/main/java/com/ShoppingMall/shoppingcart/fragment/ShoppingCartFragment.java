@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ShoppingMall.MainActivity;
 import com.ShoppingMall.R;
 import com.ShoppingMall.base.BaseFragment;
 import com.ShoppingMall.home.bean.GoodsBean;
@@ -257,7 +258,9 @@ public class ShoppingCartFragment extends BaseFragment {
                 break;
             case R.id.tv_empty_cart_tobuy:
 //                Toast.makeText(mContext, "去逛逛", Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(mContext,MainActivity.class);
+                intent.putExtra("checkedid",R.id.rb_home);
+                startActivity(intent);
                 break;
         }
     }
